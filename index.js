@@ -7,6 +7,14 @@ const express = require('express');
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const GROUP_ID = -1002549791785; // Replace with your actual group ID
 
+// HTML escape function
+function escapeHTML(text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
 // Filtered forwarder: Only forwards "✅ Player Found!" responses
 async function replyAndConditionalForward(ctx, message, options = {}) {
   const sent = await ctx.reply(message, options);
@@ -31,7 +39,7 @@ bot.start(async (ctx) => {
 });
 
 bot.action("enter_uid", async (ctx) => {
-  await ctx.reply("📌 *Send a Free Fire UID*, and I'll fetch the player's details for you.\n\n⚠️ Make sure the UID is valid.", { parse_mode: 'Markdown' });
+  await ctx.reply("📌 <b>Send a Free Fire UID</b>, and I'll fetch the player's details for you.\n\n⚠️ Make sure the UID is valid.", { parse_mode: 'HTML' });
 });
 
 bot.on("text", async (ctx) => {
@@ -53,7 +61,8 @@ bot.on("text", async (ctx) => {
     // Get user info for personalized message
     const userId = ctx.from.id;
     const userName = ctx.from.username || ctx.from.first_name || 'User';
-    const profileLink = `[${userName}](tg://user?id=${userId})`;
+    const escapedUserName = escapeHTML(userName);
+    const profileLink = `<a href="tg://user?id=${userId}">${escapedUserName}</a>`;
 
     const result =
       "✅ Player Found!\n\n" +
@@ -64,11 +73,11 @@ bot.on("text", async (ctx) => {
       `🚫 Ban Status: ${data.is_banned ? `Banned (${data.ban_period || 0} days) 🔴` : "Active 🟢"}\n\n` +
       `${profileLink} THANX FOR USING OUR BOT`;
 
-    await replyAndConditionalForward(ctx, result, { parse_mode: 'Markdown' });
+    await replyAndConditionalForward(ctx, result, { parse_mode: 'HTML' });
 
   } catch (e) {
     console.error(e);
-    await ctx.reply("❌ *Failed to fetch data. Please try again!*", { parse_mode: 'Markdown' });
+    await ctx.reply("❌ <b>Failed to fetch data. Please try again!</b>", { parse_mode: 'HTML' });
   }
 });
 
