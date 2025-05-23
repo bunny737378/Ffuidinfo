@@ -50,6 +50,11 @@ bot.on("text", async (ctx) => {
       return ctx.reply("⚠️ No player found for this UID. Please check and try again.");
     }
 
+    // Get user info for personalized message
+    const userId = ctx.from.id;
+    const userName = ctx.from.username || ctx.from.first_name || 'User';
+    const profileLink = `[${userName}](tg://user?id=${userId})`;
+
     const result =
       "✅ Player Found!\n\n" +
       `👤 Name: ${data.name || "N/A"}\n` +
@@ -57,8 +62,7 @@ bot.on("text", async (ctx) => {
       `🌍 Region: ${data.region || "N/A"}\n` +
       `📅 Account Created: ${data.account_creation_date || "N/A"}\n` +
       `🚫 Ban Status: ${data.is_banned ? `Banned (${data.ban_period || 0} days) 🔴` : "Active 🟢"}\n\n` +
-      "🔹 Use this bot to check more player details anytime!\n\n" +
-      "Join Our Discussion Group - [Link](https://t.me/letsdiscusswithbunnys)";
+      `${profileLink} THANX FOR USING OUR BOT`;
 
     await replyAndConditionalForward(ctx, result, { parse_mode: 'Markdown' });
 
