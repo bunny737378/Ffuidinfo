@@ -54,8 +54,8 @@ bot.on("text", async (ctx) => {
     const userId = ctx.from.id;
     const userName = ctx.from.username || ctx.from.first_name || 'User';
     
-    // Escape special markdown characters in username
-    const escapedUserName = userName.replace(/[\[\]()~`>#+\-=|{}.!]/g, '\\$&');
+    // Escape special markdown characters in username (except spaces)
+    const escapedUserName = userName.replace(/[\[\]()~`>#+\-=|{}.!_*\\]/g, '\\$&');
     const profileLink = `[${escapedUserName}](tg://user?id=${userId})`;
 
     const result =
