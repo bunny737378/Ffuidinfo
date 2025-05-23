@@ -53,7 +53,10 @@ bot.on("text", async (ctx) => {
     // Get user info for personalized message
     const userId = ctx.from.id;
     const userName = ctx.from.username || ctx.from.first_name || 'User';
-    const profileLink = `[${userName}](tg://user?id=${userId})`;
+    
+    // Escape special markdown characters in username
+    const escapedUserName = userName.replace(/[\[\]()~`>#+\-=|{}.!]/g, '\\$&');
+    const profileLink = `[${escapedUserName}](tg://user?id=${userId})`;
 
     const result =
       "✅ Player Found!\n\n" +
