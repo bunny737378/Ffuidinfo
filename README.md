@@ -2,7 +2,7 @@
 
 A powerful Telegram bot that fetches Free Fire player details using their UID. Built with Node.js and deployed on Vercel.
 
-## ✨ Features
+### ✨ Features
 
 - 🔍 **Instant Player Lookup** - Get player details by entering UID
 - 📊 **Comprehensive Info** - Name, Region, Account Creation Date, Ban Status
